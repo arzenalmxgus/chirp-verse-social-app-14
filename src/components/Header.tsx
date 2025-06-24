@@ -28,8 +28,13 @@ const Header = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
-            <NavLink to="/" className="text-2xl font-bold text-blue-600">
-              MicroBlog
+            <NavLink to="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">C</span>
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Chika!
+              </span>
             </NavLink>
             <nav className="hidden md:flex space-x-6">
               <NavLink
@@ -77,7 +82,7 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors outline-none">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
                   <User size={16} className="text-white" />
                 </div>
                 <span className="hidden sm:block text-gray-700">Account</span>
