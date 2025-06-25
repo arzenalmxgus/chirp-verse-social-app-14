@@ -2,6 +2,14 @@
 import React, { useState } from 'react';
 import CreatePost from '../components/CreatePost';
 import PostCard from '../components/PostCard';
+import EditPostModal from '../components/EditPostModal';
+
+interface Comment {
+  id: string;
+  author: string;
+  content: string;
+  timestamp: string;
+}
 
 const Feed = () => {
   const [posts, setPosts] = useState([
@@ -34,6 +42,18 @@ const Feed = () => {
     }
   ]);
 
+  const [comments, setComments] = useState<{ [postId: string]: Comment[] }>({
+    '1': [
+      { id: '1-1', author: 'Jane Doe', content: 'Congratulations! 🎉', timestamp: '1h ago' },
+      { id: '1-2', author: 'Tom Wilson', content: 'Looking forward to seeing it!', timestamp: '30m ago' }
+    ],
+    '2': [
+      { id: '2-1', author: 'Emma Davis', content: 'Absolutely gorgeous! 😍', timestamp: '3h ago' }
+    ]
+  });
+
+  const [editingPost, setEditingPost] = useState<{ id: string; content: string } | null>(null);
+
   const handleCreatePost = (content: string) => {
     const newPost = {
       id: Date.now().toString(),
@@ -60,12 +80,52 @@ const Feed = () => {
   };
 
   const handleEdit = (postId: string) => {
-    console.log('Edit post:', postId);
-    // This would open an edit modal in a real app
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+      setEditingPost({ id: post.id, content: post.content });
+    }
+  };
+
+  const handleSaveEdit = (postId: string, newContent: string) => {
+    setPosts(prev => prev.map(post => 
+      post.id === postId 
+        ? { ...post, content: newContent }
+        : post
+    ));
+    setEditingPost(null);
   };
 
   const handleDelete = (postId: string) => {
-    setPosts(prev => prev.filter(post => post.id !== postId));
+    if (confirm('Are you sure you want to delete this post?')) {
+      setPosts(prev => prev.filter(post => post.id !== postId));
+      // Also remove comments for this post
+      setComments(prev => {
+        const newComments = { ...prev };
+        delete newComments[postId];
+        return newComments;
+      });
+    }
+  };
+
+  const handleAddComment = (postId: string, content: string) => {
+    const newComment: Comment = {
+      id: `${postId}-${Date.now()}`,
+      author: 'You',
+      content,
+      timestamp: 'now'
+    };
+
+    setComments(prev => ({
+      ...prev,
+      [postId]: [...(prev[postId] || []), newComment]
+    }));
+
+    // Update post comment count
+    setPosts(prev => prev.map(post => 
+      post.id === postId 
+        ? { ...post, comments: post.comments + 1 }
+        : post
+    ));
   };
 
   return (
@@ -78,14 +138,25 @@ const Feed = () => {
             <PostCard
               key={post.id}
               post={post}
+              postComments={comments[post.id] || []}
               onLike={handleLike}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onAddComment={handleAddComment}
               isOwner={post.author === 'You'}
             />
           ))}
         </div>
       </div>
+
+      {editingPost && (
+        <EditPostModal
+          isOpen={true}
+          onClose={() => setEditingPost(null)}
+          post={editingPost}
+          onSave={handleSaveEdit}
+        />
+      )}
     </div>
   );
 };
