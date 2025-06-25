@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { User, Edit } from 'lucide-react';
+import { User, Edit, Camera } from 'lucide-react';
 
 interface UserProfileProps {
   user: {
@@ -20,6 +20,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdateProfile }) => {
     username: user.username,
     bio: user.bio
   });
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,11 +35,50 @@ const UserProfile: React.FC<UserProfileProps> = ({ user, onUpdateProfile }) => {
     }));
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setProfileImage(event.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerImageUpload = () => {
+    document.getElementById('profile-image-upload')?.click();
+  };
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-8">
       <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
-        <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-          <User size={40} className="text-white" />
+        <div className="relative flex-shrink-0">
+          <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden">
+            {profileImage ? (
+              <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              <User size={40} className="text-white" />
+            )}
+          </div>
+          {isEditing && (
+            <>
+              <button
+                type="button"
+                onClick={triggerImageUpload}
+                className="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors shadow-lg"
+              >
+                <Camera size={16} />
+              </button>
+              <input
+                id="profile-image-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+            </>
+          )}
         </div>
         
         <div className="flex-1 text-center sm:text-left">
