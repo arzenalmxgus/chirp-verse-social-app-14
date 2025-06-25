@@ -2,6 +2,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { User, Home, Bell, MessageSquare, ChevronDown } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +25,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 backdrop-blur-sm bg-white/95 dark:bg-gray-800/95">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
@@ -42,8 +43,8 @@ const Header = () => {
                 className={({ isActive }) =>
                   `flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
                     isActive
-                      ? 'bg-blue-50 text-blue-600'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`
                 }
               >
@@ -55,8 +56,8 @@ const Header = () => {
                 className={({ isActive }) =>
                   `flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
                     isActive
-                      ? 'bg-blue-50 text-blue-600'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`
                 }
               >
@@ -68,8 +69,8 @@ const Header = () => {
                 className={({ isActive }) =>
                   `flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
                     isActive
-                      ? 'bg-blue-50 text-blue-600'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`
                 }
               >
@@ -80,26 +81,27 @@ const Header = () => {
           </div>
           
           <div className="flex items-center space-x-4">
+            <ThemeToggle />
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors outline-none">
+              <DropdownMenuTrigger className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors outline-none">
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
                   <User size={16} className="text-white" />
                 </div>
-                <span className="hidden sm:block text-gray-700">Account</span>
-                <ChevronDown size={16} className="text-gray-500" />
+                <span className="hidden sm:block text-gray-700 dark:text-gray-300">Account</span>
+                <ChevronDown size={16} className="text-gray-500 dark:text-gray-400" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white border border-gray-200 shadow-lg">
+              <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <DropdownMenuItem 
                   onClick={handleProfile}
-                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                 >
                   <User size={16} />
                   <span>View Profile</span>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator className="my-1 border-gray-200" />
+                <DropdownMenuSeparator className="my-1 border-gray-200 dark:border-gray-700" />
                 <DropdownMenuItem 
                   onClick={handleLogout}
-                  className="flex items-center space-x-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer"
                 >
                   <span>Logout</span>
                 </DropdownMenuItem>
