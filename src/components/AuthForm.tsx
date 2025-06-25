@@ -4,7 +4,7 @@ import { Camera, Heart, MessageCircle } from 'lucide-react';
 
 interface AuthFormProps {
   isLogin: boolean;
-  onSubmit: (data: { email: string; password: string; username?: string }) => void;
+  onSubmit: (data: { email: string; password: string; username?: string; displayName?: string }) => void;
   onToggleMode: () => void;
 }
 
@@ -12,7 +12,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onSubmit, onToggleMode }) 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    username: ''
+    username: '',
+    displayName: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -67,21 +68,42 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onSubmit, onToggleMode }) 
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
-              <div className="relative">
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required={!isLogin}
-                  className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all placeholder-gray-400 text-gray-800"
-                  placeholder="Choose your username"
-                />
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+              <>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    required={!isLogin}
+                    className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all placeholder-gray-400 text-gray-800"
+                    placeholder="Choose your username (permanent)"
+                    pattern="[a-zA-Z0-9_]+"
+                    title="Username can only contain letters, numbers, and underscores"
+                  />
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                  </div>
                 </div>
-              </div>
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="displayName"
+                    name="displayName"
+                    value={formData.displayName}
+                    onChange={handleChange}
+                    required={!isLogin}
+                    className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all placeholder-gray-400 text-gray-800"
+                    placeholder="Your display name"
+                    maxLength={50}
+                  />
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                  </div>
+                </div>
+              </>
             )}
 
             <div className="relative">
@@ -96,7 +118,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onSubmit, onToggleMode }) 
                 placeholder="Your email address"
               />
               <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
               </div>
             </div>
 
